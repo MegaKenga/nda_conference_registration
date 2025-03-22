@@ -12,6 +12,7 @@ dependencies = [
     "dotenv (>=0.9.9,<0.10.0)",
     "psycopg (>=3.2.6,<4.0.0)",
     "dadata (>=24.10.0,<25.0.0)",
+    "django-debug-toolbar (>=5.1.0,<6.0.0)",
 ]
 
 
