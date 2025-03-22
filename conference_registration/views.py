@@ -1,23 +1,19 @@
-from dadata import Dadata
-from dotenv import load_dotenv
-import os
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+
+from dotenv import load_dotenv
 
 from conference_registration.models import Person
-from conference_registration.forms import AddPartnerToConferenceList
+from conference_registration.forms import AddPartnerToConferenceList, LoginUserForm
+
 
 load_dotenv()
 
 
-def get_company_by_inn(inn):
-    inn = Person.company_inn
-    token = os.getenv('TOKEN')
-    dadata = Dadata(token)
-    result = dadata.find_by_id(name="party", query=str(inn))
-
-    for name in result:
-        return(name['value'])
+def index(request):
+    return render(request, 'index.html')
 
 
 def person_add(request):
@@ -28,7 +24,6 @@ def person_add(request):
                 Person.objects.create(**form.cleaned_data)
             except:
                 form.add_error(None, 'Ошибка добавления поста')
-            form.save()
             return redirect('confirmation')
     else:
         form = AddPartnerToConferenceList()
@@ -37,3 +32,18 @@ def person_add(request):
 
 def confirmation(request):
     return render(request, 'confirmation.html')
+
+
+class LoginUser(LoginView):
+    form_class = LoginUserForm
+    template_name = 'login.html'
+    extra_context = {'title': "Авторизация"}
+
+    def get_success_url(self):
+        return reverse_lazy('list_registered')
+
+
+@login_required
+def list_partners(request):
+    partners_list = Person.objects.all()
+    return render(request, 'partners_list.html', {'partners_list': partners_list},)

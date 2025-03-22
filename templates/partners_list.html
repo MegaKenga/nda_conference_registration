@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for partner in partners_list %}
+    <div>{{ partner.last_name }} {{ partner.first_name}} {{ partner.father_name }}</div>
+    <div>{{ partner.get_company_by_inn }}</div>
+{% endfor %}
+</body>
+</html>

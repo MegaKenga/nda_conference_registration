@@ -1,5 +1,9 @@
 from django.db import models
 
+from dadata import Dadata
+import os
+
+
 class Person(models.Model):
     class Manager(models.TextChoices):
         MARKAROV = 'Маркаров Иван'
@@ -39,6 +43,15 @@ class Person(models.Model):
         ordering = ['company_inn']
         verbose_name = 'Зарегистрированный партнер'
         verbose_name_plural = 'Зарегистрированные партнеры'
+
+    def get_company_by_inn(self):
+        inn = self.company_inn
+        token = os.getenv('TOKEN')
+        dadata = Dadata(token)
+        result = dadata.find_by_id(name="party", query=str(inn))
+
+        for name in result:
+            return (name['value'])
 
     def __str__(self):
         return str(self.last_name) + ' ' + str(self.first_name) + ' ' + str(self.father_name)
