@@ -46,4 +46,7 @@ class LoginUser(LoginView):
 @login_required
 def list_partners(request):
     partners_list = Person.objects.all()
-    return render(request, 'partners_list.html', {'partners_list': partners_list},)
+    return render(request, 'partners_list.html', {'partners_list': partners_list, })
+
+def not_allowed(request):
+    return render(request, 'not_allowed.html',)

@@ -59,6 +59,18 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+
 ROOT_URLCONF = 'nda.urls'
 
 TEMPLATES = [
@@ -126,13 +138,17 @@ USE_I18N = True
 
 USE_TZ = True
 
+LOGIN_URL = 'not_allowed'
+
 LOGOUT_REDIRECT_URL = 'home'
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (BASE_DIR / "static",)
+# STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

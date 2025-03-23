@@ -5,7 +5,16 @@
     <title>Title</title>
 </head>
 <body>
+{% if user.is_authenticated %}
+<li class="last"> {{user.username}} | <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">logout</button>
+</form></li>
+{% else %}
+<li class="last"><a href="{% url 'login' %}">Войти</a></li>
+{% endif %}
 <p>Добро пожаловать на портал регистрации участников ежегодной конференции партнеров НДА Деловая Медицинская компания</p>
 <a href="{% url 'person_add' %}">Регистрация</a>
+<a href="{% url 'list_registered' %}">Переход на страницу партнеров</a>
 </body>
 </html>
