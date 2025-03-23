@@ -7,7 +7,20 @@
 <body>
 <form action="" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    <p><label class="form-label" for="{{ form.last_name.id_for_label }}">{{form.last_name.label}}: </label>{{ form.last_name }}</p>
+    <div class="form-error">{{ form.last_name.errors }}</div>
+    <p><label class="form-label" for="{{ form.first_name.id_for_label }}">{{form.first_name.label}}: </label>{{ form.first_name }}</p>
+    <div class="form-error">{{ form.first_name.errors }}</div>
+    <p><label class="form-label" for="{{ form.father_name.id_for_label }}">{{form.father_name.label}}: </label>{{ form.father_name }}</p>
+    <div class="form-error">{{ form.father_name.errors }}</div>
+    <p><label class="form-label" for="{{ form.company_inn.id_for_label }}">{{form.company_inn.label}}: </label>{{ form.company_inn }}</p>
+    <div class="form-error">{{ form.company_inn.errors }}</div>
+    <p><label class="form-label" for="{{ form.person_email.id_for_label }}">{{form.person_email.label}}: </label>{{ form.person_email }}</p>
+    <div class="form-error">{{ form.person_email.errors }}</div>
+    <p><label class="form-label" for="{{ form.person_phone.id_for_label }}">{{form.person_phone.label}}: </label>{{ form.person_phone }}</p>
+    <div class="form-error">{{ form.person_phone.errors }}</div>
+    <p><label class="form-label" for="{{ form.company_related_manager.id_for_label }}">{{form.company_related_manager.label}}: </label>{{ form.company_related_manager }}</p>
+    <div class="form-error">{{ form.company_related_manager.errors }}</div>
     <button type="submit">Добавить</button>
 </form>
 </body>
