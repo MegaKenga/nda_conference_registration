@@ -3,8 +3,8 @@ from django.db import models
 
 class Person(models.Model):
     class Manager(models.TextChoices):
-        MARKAROV = 'Маркаров Иван'
-        GARTSUEV = 'Гарцуев Александр'
+        MARKAROV = 'MARKAROV', 'Маркаров Иван'
+        GARTSUEV = 'GARTSUEV', 'Гарцуев Александр'
 
     last_name = models.CharField(
         max_length=50,
