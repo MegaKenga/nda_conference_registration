@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
@@ -7,6 +8,7 @@ from dotenv import load_dotenv
 
 from conference_registration.models import Person
 from conference_registration.forms import AddPartnerToConferenceList, LoginUserForm
+from conference_registration.email_sender import EmailSender
 
 
 load_dotenv()
@@ -21,9 +23,12 @@ def person_add(request):
         form = AddPartnerToConferenceList(request.POST)
         if form.is_valid():
             try:
+                EmailSender.send_messages(request)
                 Person.objects.create(**form.cleaned_data)
-            except:
-                form.add_error(None, 'Ошибка добавления поста')
+            except Exception as e:
+                print(f'email_send failed due to: {e}')
+                response = HttpResponse(status=500)
+                return response
             return redirect('confirmation')
     else:
         form = AddPartnerToConferenceList()

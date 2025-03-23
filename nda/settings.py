@@ -62,13 +62,11 @@ MIDDLEWARE = [
 
 CACHES = {
     "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
+        # "BACKEND": "django_redis.cache.RedisCache",
+        "BACKEND": 'django.core.cache.backends.dummy.DummyCache',
         "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
-}
 
 
 ROOT_URLCONF = 'nda.urls'
@@ -76,8 +74,7 @@ ROOT_URLCONF = 'nda.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -154,3 +151,13 @@ STATICFILES_DIRS = (BASE_DIR / "static",)
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# EMAIL_SENDER SETTINGS
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.getenv('HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('HOST_PASSWORD')
+RECIPIENT_EMAIL = os.getenv('RECIPIENT')
+EMAIL_PORT = os.getenv('PORT', '587')
+EMAIL_USE_TLS = True
