@@ -5,6 +5,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
 from dotenv import load_dotenv
+from dadata import Dadata
+import os
 
 from conference_registration.models import Person
 from conference_registration.forms import AddPartnerToConferenceList, LoginUserForm
@@ -12,6 +14,16 @@ from conference_registration.email_sender import EmailSender
 
 
 load_dotenv()
+
+
+def get_company_by_inn(company_inn):
+    inn = company_inn
+    token = os.getenv('TOKEN')
+    dadata = Dadata(token)
+    result = dadata.find_by_id(name="party", query=str(inn))
+
+    for name in result:
+        return name['value']
 
 
 def index(request):
@@ -22,9 +34,19 @@ def person_add(request):
     if request.method == 'POST':
         form = AddPartnerToConferenceList(request.POST)
         if form.is_valid():
+            calculated_company_name = get_company_by_inn(form.cleaned_data['company_inn'])
             try:
-                EmailSender.send_messages(request)
-                Person.objects.create(**form.cleaned_data)
+                EmailSender.send_messages(request, calculated_company_name)
+                Person.objects.create(
+                    last_name=form.cleaned_data['last_name'],
+                    first_name=form.cleaned_data['first_name'],
+                    father_name=form.cleaned_data['father_name'],
+                    company_inn=form.cleaned_data['company_inn'],
+                    company_name=calculated_company_name,
+                    person_email=form.cleaned_data['person_email'],
+                    person_phone=form.cleaned_data['person_phone'],
+                    company_related_manager=form.cleaned_data['company_related_manager']
+                )
             except Exception as e:
                 print(f'email_send failed due to: {e}')
                 response = HttpResponse(status=500)
