@@ -12,3 +12,12 @@ shell:
 
 admin:
 		python3 manage.py createsuperuser
+
+redis-stop:
+		sudo service redis-server stop
+
+redis:
+		redis-server
+
+celery-run:
+		celery -A nda worker -l info
