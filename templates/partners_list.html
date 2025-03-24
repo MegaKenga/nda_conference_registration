@@ -7,7 +7,7 @@
 <body>
 {% if user.is_authenticated %}
 {% for partner in partners_list %}
-    <div>{{ partner.last_name }} {{ partner.first_name}} {{ partner.father_name }} {{ partner.company_inn }} {{ partner.get_company_by_inn }} {{ partner.person_email }} {{ partner.person_phone }} {{ partner.company_related_manager }}</div>
+    <div>{{ partner.last_name }} {{ partner.first_name}} {{ partner.father_name }} {{ partner.company_inn }} {{ partner.company_name }} {{ partner.person_email }} {{ partner.person_phone }} {{ partner.company_related_manager }}</div>
 {% endfor %}
 {% endif %}
 <a href="{% url 'home' %}">Домой</a>
