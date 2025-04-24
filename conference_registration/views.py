@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from dotenv import load_dotenv
 from dadata import Dadata
 import os
+import uuid
 
 from conference_registration.models import Person
 from conference_registration.forms import AddPartnerToConferenceList, LoginUserForm
@@ -26,6 +27,11 @@ def get_company_by_inn(company_inn):
         return name['value']
 
 
+def get_person_unique_key():
+    unique_key = uuid.uuid4().hex
+    return unique_key
+
+
 def index(request):
     return render(request, 'index.html')
 
@@ -35,8 +41,9 @@ def person_add(request):
         form = AddPartnerToConferenceList(request.POST)
         if form.is_valid():
             calculated_company_name = get_company_by_inn(form.cleaned_data['company_inn'])
+            generated_person_unique_key = get_person_unique_key()
             try:
-                EmailSender.send_messages(request, calculated_company_name)
+                EmailSender.send_messages(request, calculated_company_name, generated_person_unique_key)
                 Person.objects.create(
                     last_name=form.cleaned_data['last_name'],
                     first_name=form.cleaned_data['first_name'],
@@ -45,13 +52,16 @@ def person_add(request):
                     company_name=calculated_company_name,
                     person_email=form.cleaned_data['person_email'],
                     person_phone=form.cleaned_data['person_phone'],
-                    company_related_manager=form.cleaned_data['company_related_manager']
+                    company_related_manager=form.cleaned_data['company_related_manager'],
+                    person_unique_key=str(generated_person_unique_key)
                 )
             except Exception as e:
                 print(f'email_send failed due to: {e}')
                 response = HttpResponse(status=500)
                 return response
             return redirect('confirmation')
+        else:
+            print(form.errors)
     else:
         form = AddPartnerToConferenceList()
     return render(request, 'addperson.html', {'form': form})

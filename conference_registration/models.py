@@ -2,10 +2,13 @@ from django.db import models
 
 
 class Person(models.Model):
-    class Manager(models.TextChoices):
-        MARKAROV = 'MARKAROV', 'Маркаров Иван'
-        GARTSUEV = 'GARTSUEV', 'Гарцуев Александр'
+    MARKAROV = 'Маркаров Иван'
+    GARTSUEV = 'Гарцуев Александр'
 
+    MANAGER = (
+        (MARKAROV, 'Маркаров Иван'),
+        (GARTSUEV, 'Гарцуев Александр')
+    )
     last_name = models.CharField(
         max_length=50,
         verbose_name='Фамилия'
@@ -38,8 +41,14 @@ class Person(models.Model):
         verbose_name='Контактный телефон'
     )
     company_related_manager = models.CharField(
-        choices=Manager.choices,
+        choices=MANAGER,
         verbose_name='Менеджер партнера'
+    )
+    person_unique_key = models.CharField(
+        blank=True,
+        unique=True,
+        max_length=50,
+        verbose_name='Уникальный ключ клиента'
     )
 
     class Meta:

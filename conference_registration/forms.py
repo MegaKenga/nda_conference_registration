@@ -12,7 +12,7 @@ class AddPartnerToConferenceList(forms.ModelForm):
     company_inn = forms.CharField(max_length=50, required=True, label='ИНН организации')
     person_email = forms.EmailField(label='Email для связи', required=True)
     person_phone = forms.CharField(max_length=50, required=True, label='Контактный телефон')
-    company_related_manager = forms.ChoiceField(choices=Person.Manager.choices, required=True, label='Ваш менеджер в НДА Деловая медицинская компания')
+    company_related_manager = forms.ChoiceField(choices=Person.MANAGER, required=True, label='Ваш менеджер в НДА Деловая медицинская компания')
 
     class Meta:
         model = Person

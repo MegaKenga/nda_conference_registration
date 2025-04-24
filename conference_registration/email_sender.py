@@ -21,7 +21,7 @@ class EmailSender:
         return last_name, first_name, father_name, company_inn, person_email, person_phone, company_related_manager
 
     @classmethod
-    def send_messages(cls, request, calculated_company_name):
+    def send_messages(cls, request, calculated_company_name, generated_person_unique_key):
         last_name, first_name, father_name, company_inn, person_email, person_phone, company_related_manager = cls.get_message_data(request)
         context = {
             'last_name': last_name,
@@ -32,6 +32,7 @@ class EmailSender:
             'person_email': person_email,
             'person_phone': person_phone,
             'company_related_manager': company_related_manager,
+            'generated_person_unique_key': generated_person_unique_key,
             }
         html_message_for_nda = render_to_string(
                 'message_for_nda.html',
