@@ -12,7 +12,7 @@ class AddPartnerToConferenceList(forms.ModelForm):
     company_inn = forms.CharField(max_length=50, required=True, label='ИНН организации')
     person_email = forms.EmailField(label='Email для связи', required=True)
     person_phone = forms.CharField(max_length=50, required=True, label='Контактный телефон')
-    company_related_manager = forms.ChoiceField(choices=Person.MANAGER, required=True, label='Ваш менеджер в НДА Деловая медицинская компания')
+    company_related_manager = forms.ChoiceField(choices=Person.Manager, required=True, label='Ваш менеджер в НДА Деловая медицинская компания')
 
     class Meta:
         model = Person
@@ -26,3 +26,9 @@ class LoginUserForm(AuthenticationForm):
     class Meta:
         model = User
         fields = ['username', 'password']
+
+
+class DeletePartnerFromConferenceList(forms.Form):
+    last_name = forms.CharField(max_length=50, required=True, label='Ваша фамилия')
+    company_inn = forms.CharField(max_length=50, required=True, label='ИНН организации')
+    person_unique_key = forms.CharField(max_length=50, required=True, label='Ваш уникальный ключ, полученный при регистрации')

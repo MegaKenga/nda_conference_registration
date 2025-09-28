@@ -10,7 +10,7 @@ import os
 import uuid
 
 from conference_registration.models import Person
-from conference_registration.forms import AddPartnerToConferenceList, LoginUserForm
+from conference_registration.forms import AddPartnerToConferenceList, LoginUserForm, DeletePartnerFromConferenceList
 from conference_registration.email_sender import EmailSender
 
 
@@ -25,6 +25,7 @@ def get_company_by_inn(company_inn):
 
     for name in result:
         return name['value']
+    return None
 
 
 def get_person_unique_key():
@@ -85,5 +86,33 @@ def list_partners(request):
     partners_list = Person.objects.all()
     return render(request, 'partners_list.html', {'partners_list': partners_list, })
 
+
 def not_allowed(request):
     return render(request, 'not_allowed.html',)
+
+
+def person_delete(request):
+    if request.method == 'POST':
+        form = DeletePartnerFromConferenceList(request.POST)
+        if form.is_valid():
+            try:
+                person_unique_key = form.cleaned_data['person_unique_key']
+                company_inn = form.cleaned_data['company_inn']
+                last_name = form.cleaned_data['last_name']
+                get_person = Person.objects.filter(
+                    person_unique_key=person_unique_key,
+                    company_inn=company_inn,
+                    last_name=last_name)
+                get_person.delete()
+                return redirect('cancellation')
+            except Exception as e:
+                print(f'email_send failed due to: {e}')
+                response = HttpResponse(status=500)
+                return response
+    else:
+        form = DeletePartnerFromConferenceList(request.POST)
+    return render(request, 'deleteperson.html', {'form': form})
+
+
+def cancellation(request):
+    return render(request, 'cancel.html')

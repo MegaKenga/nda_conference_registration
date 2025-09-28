@@ -24,6 +24,7 @@ class PersonAdmin(admin.ModelAdmin):
         'person_email',
         'person_phone',
         'company_related_manager',
+        'person_unique_key'
     ]
     view_on_site = True
     actions_on_bottom = True

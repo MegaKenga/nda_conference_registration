@@ -8,4 +8,6 @@ urlpatterns = [
     path('confirmation', views.confirmation, name='confirmation'),
     path('registered', views.list_partners, name='list_registered'),
     path('closed', views.not_allowed, name='not_allowed'),
+    path('delete', views.person_delete, name='delete'),
+    path('cancellation', views.cancellation, name='cancellation'),
 ]

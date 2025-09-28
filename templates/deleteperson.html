@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post" action="{% url 'delete' %}"
+      onsubmit="return confirm ('Вы уверены?')"
+      enctype="multipart/form-data">
+    {% csrf_token %}
+    <p><label class="form-label" for="{{ form.last_name.id_for_label }}">{{form.last_name.label}}: </label>{{ form.last_name }}</p>
+    <div class="form-error">{{ form.last_name.errors }}</div>
+    <p><label class="form-label" for="{{ form.company_inn.id_for_label }}">{{form.company_inn.label}}: </label>{{ form.company_inn }}</p>
+    <div class="form-error">{{ form.company_inn.errors }}</div>
+    <p><label class="form-label" for="{{ form.person_unique_key.id_for_label }}">{{form.person_unique_key.label}}: </label>{{ form.person_unique_key }}</p>
+    <div class="form-error">{{ form.person_unique_key.errors }}</div>
+    <button type="submit">Удалить</button>
+</form>
+</body>
+</html>
